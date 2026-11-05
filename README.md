@@ -6,7 +6,7 @@ The JSON report includes schema, table row counts, foreign-key violations,
 integrity checks, SQLite version and an explicit partial-execution warning if SQL
 fails. There is no apply command. Python 3 standard library only.
 
-Download the [source ZIP](https://codeload.github.com/Dexter-Ou/sqlite-rehearsal/zip/a60249c17ad091e985f1372221e505de334f9e9b), extract it and open a terminal in the extracted folder.
+Download the [source ZIP](https://codeload.github.com/Dexter-Ou/sqlite-rehearsal/zip/e9951340de384cb76b02c77108e091e18a2e3f4b), extract it and open a terminal in the extracted folder.
 
 ```
 python3 rehearse.py fixture.db migration.sql > report.json
