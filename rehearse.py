@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import sqlite3
 import time
@@ -22,8 +23,8 @@ def counts(conn):
 
 def rehearse(database, migration, seconds=5):
     path = Path(database).resolve(strict=True)
-    if seconds <= 0 or seconds > 30:
-        raise ValueError('seconds must be greater than 0 and at most 30')
+    if not math.isfinite(seconds) or seconds <= 0 or seconds > 30:
+        raise ValueError('seconds must be finite, greater than 0 and at most 30')
     # Only closed, offline fixtures: immutable reads do not handle live WAL state.
     if Path(str(path) + '-wal').exists() or Path(str(path) + '-journal').exists():
         raise ValueError('use a closed, checkpointed fixture; WAL/journal sidecar found')
