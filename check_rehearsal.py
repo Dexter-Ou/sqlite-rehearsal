@@ -33,6 +33,12 @@ with tempfile.TemporaryDirectory() as tmp:
     r = rehearse(db, sql, .01)
     assert r['status']=='error' and 'interrupted' in r['error']
     results.append({'case':'execution deadline', 'passed':True})
+    sql.write_text('SELECT 1;')
+    for duration in ('nan', 'inf', '-inf', '0', '31'):
+        invalid = subprocess.run([sys.executable, 'rehearse.py', str(db), str(sql), '--seconds=' + duration], capture_output=True, text=True, timeout=3)
+        assert invalid.returncode == 2 and json.loads(invalid.stdout)['status'] == 'input_error', duration
+        assert hashlib.sha256(db.read_bytes()).hexdigest() == original
+        results.append({'case': 'invalid duration rejected: ' + duration, 'passed': True})
     Path(str(db)+'-wal').touch()
     try:
         rehearse(db, sql)
